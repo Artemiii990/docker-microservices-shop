@@ -1,0 +1,108 @@
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: #fff;
+    border-radius: 16px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-left: 100px;
+}
+
+/* ===== ФИЛЬТРЫ ===== */
+.filter-panel-home {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.filter-panel-home h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* инпуты */
+.filter-panel-home input,
+.filter-panel-home select {
+    width: 200px;
+    padding: 10px 12px;
+
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+    font-size: 14px;
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.filter-panel input-home:focus,
+.filter-panel select-home:focus {
+    border-color: #19fd01;
+    box-shadow: 0 0 0 3px rgba(25, 253, 1, 0.15);
+}
+
+/* блок цены */
+.filter-block-home {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===== СПИСОК КАТЕГОРИЙ ===== */
+.ul-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+/* категория */
+.li-list {
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    transition: all 0.2s ease;
+}
+
+/* hover как в норм магазинах */
+.li-list:hover {
+    background: #f5f5f5;
+    transform: translateX(3px);
+}
+
+/* активное нажатие */
+.li-list:active {
+    transform: scale(0.98);
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}

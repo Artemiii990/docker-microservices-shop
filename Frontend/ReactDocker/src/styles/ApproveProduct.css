@@ -1,0 +1,88 @@
+.approved-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.approved-modal {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.approved-title {
+    margin-bottom: 10px;
+    color: #2ecc71;
+}
+
+.approved-order {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.approved-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin: 15px 0;
+}
+
+.approved-product {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.approved-info {
+    margin: 5px 0;
+}
+
+.approved-total {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.approved-date {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+}
+
+.approved-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.approved-button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #2ecc71;
+    color: white;
+    cursor: pointer;
+}
+
+.approved-secondary {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

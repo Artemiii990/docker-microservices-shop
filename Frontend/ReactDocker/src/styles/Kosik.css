@@ -1,0 +1,21 @@
+.cart-page{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.cart-page table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.cart-page th,
+.cart-page td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+.cart-page img{
+    margin-right:10px;
+}

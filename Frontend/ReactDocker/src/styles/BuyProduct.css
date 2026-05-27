@@ -1,0 +1,52 @@
+.buy-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    height:100vh;
+}
+
+.buy-card{
+    display:flex;
+    gap:40px;
+    padding:40px;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.buy-card img{
+    width:250px;
+    object-fit:contain;
+}
+
+.buy-info{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.price{
+    font-size:22px;
+    color:#00a046;
+    font-weight:bold;
+}
+
+.quantity input{
+    width:80px;
+    padding:6px;
+}
+
+.buy-button{
+    background: #ffa724;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.buy-button:hover{
+    background: #ffa724
+}

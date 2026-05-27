@@ -1,0 +1,27 @@
+# ENV
+.env
+
+# NODE
+node_modules
+dist
+
+# .NET
+bin
+obj
+
+# VS
+.vs
+*.user
+*.suo
+
+# JetBrains
+.idea
+
+# MacOS
+.DS_Store
+
+# Docker
+docker-data
+
+# Logs
+*.log

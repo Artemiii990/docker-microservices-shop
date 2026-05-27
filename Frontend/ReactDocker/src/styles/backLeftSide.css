@@ -1,0 +1,64 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    z-index: 90;
+}
+
+.LeftSidebar {
+    position: fixed;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    background: #040202;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.15);
+    transition: left 0.3s ease;
+    z-index: 100;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* когда панель открыта */
+.LeftSidebar.open {
+    left: 0;
+}
+
+/* заголовок */
+.LeftSidebar h3 {
+    margin-bottom: 25px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* список */
+.LeftSidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color:white;
+}
+
+/* элементы меню */
+.LeftSidebar li {
+    color:white;
+    padding: 12px 10px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+/* hover эффект */
+.LeftSidebar li:hover {
+    background: #f2f2f2;
+}
+
+/* ссылки */
+.LeftSidebar a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    display: block;
+}

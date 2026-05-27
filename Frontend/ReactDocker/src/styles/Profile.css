@@ -1,0 +1,167 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #f7f7f7;
+    min-height: 100vh;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 900px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px 30px;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.profile-header button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00a046;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.profile-header button:hover {
+    background-color: #008037;
+}
+
+.orders-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-list th, .orders-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.orders-list tr:hover {
+    background-color: #f0f0f0;
+}
+
+.no-orders {
+    text-align: center;
+    color: #777;
+    padding: 30px 0;
+}
+
+
+.profile-layout {
+    display: flex;
+    gap: 20px;
+}
+
+/* LEFT */
+.profile-sidebar {
+    width: 260px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    height: fit-content;
+}
+
+.user-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.username {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar button {
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.status{
+    padding:5px 10px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:12px;
+}
+
+.status.Processing{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status.Shipped{
+    background:#cce5ff;
+    color:#004085;
+}
+
+.status.Delivered{
+    background:#d4edda;
+    color:#155724;
+}
+
+.status.Cancelled{
+    background:#f8d7da;
+    color:#721c24;
+}
+
+
+/* RIGHT */
+.profile-content {
+    flex: 1;
+}
+
+
+@media (max-width: 1024px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    .profile-sidebar img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-content {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
