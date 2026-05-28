@@ -49,7 +49,7 @@ export default function AdminPanel() {
                 }
 
                 const res = await fetch(
-                    `${AUTH_API}/checkadmin`,
+                    `${AUTH_API}/api/auth/checkadmin`,
                     {
                         headers: {
                             Authorization:

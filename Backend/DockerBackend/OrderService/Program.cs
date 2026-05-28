@@ -7,8 +7,6 @@ using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 
-using Microsoft.Extensions.Configuration.Memory;
-
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,87 +31,115 @@ var request = new GetSecretValueRequest
 
 var response = await secretsClient.GetSecretValueAsync(request);
 
-var secrets = JsonSerializer.Deserialize<Dictionary<string, string>>(
+var secrets = JsonSerializer.Deserialize<
+    Dictionary<string, string>
+>(
     response.SecretString!
 );
 
 if (secrets != null)
 {
-    builder.Configuration.AddInMemoryCollection(secrets);
+    builder.Configuration
+        .AddInMemoryCollection(secrets);
 }
 
 // =====================================
 // DOCKER
 // =====================================
 
-builder.WebHost.UseUrls("http://0.0.0.0:8080");
+builder.WebHost.UseUrls(
+    "http://0.0.0.0:8080"
+);
 
-// ======================
+// =====================================
 // SERVICES
-// ======================
+// =====================================
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
-// ======================
+// =====================================
 // DATABASE
-// ======================
+// =====================================
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sql => sql.EnableRetryOnFailure()
-    ));
+builder.Services.AddDbContext<AppDbContext>(
+    options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString(
+                "DefaultConnection"
+            ),
+            sql => sql.EnableRetryOnFailure()
+        )
+);
 
-// ======================
-// AUTH (JWT)
-// ======================
+// =====================================
+// JWT AUTH
+// =====================================
 
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
+builder.Services
+    .AddAuthentication("Bearer")
+    .AddJwtBearer(
+        "Bearer",
+        options =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+            options.TokenValidationParameters =
+                new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
 
-            ValidIssuer = builder.Configuration["Jwt__Issuer"],
-            ValidAudience = builder.Configuration["Jwt__Audience"],
+                    ValidIssuer =
+                        builder.Configuration["Jwt__Issuer"],
 
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    builder.Configuration["Jwt__Key"]!
-                )
-            )
-        };
-    });
+                    ValidAudience =
+                        builder.Configuration["Jwt__Audience"],
+
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(
+                                builder.Configuration[
+                                    "Jwt__Key"
+                                ]!
+                            )
+                        )
+                };
+        }
+    );
 
 builder.Services.AddAuthorization();
 
-// ======================
+// =====================================
 // CORS
-// ======================
+// =====================================
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
 });
 
-// ======================
+// =====================================
 // APP
-// ======================
+// =====================================
 
 var app = builder.Build();
 
-// middleware order
+// =====================================
+// MIDDLEWARE
+// =====================================
 
 app.UseRouting();
 
@@ -129,9 +155,9 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
-// ======================
-// MIGRATIONS SAFE
-// ======================
+// =====================================
+// AUTO MIGRATIONS
+// =====================================
 
 using (var scope = app.Services.CreateScope())
 {

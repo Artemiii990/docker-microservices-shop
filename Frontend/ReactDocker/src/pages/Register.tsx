@@ -1,13 +1,12 @@
 import { useState } from "react";
 import "../styles/Register.css";
-import {API_AUTH} from "../api/source.ts"
+import { API_REGISTER } from "../api/source.ts";
 
-const API_URL = API_AUTH;
+const API_URL = API_REGISTER;
 
 export default function Register() {
 
     const [form, setForm] = useState({
-        name: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -16,86 +15,120 @@ export default function Register() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (
+        e: React.FormEvent
+    ) => {
+
         e.preventDefault();
 
         setError("");
         setSuccess("");
 
-        if (form.password !== form.confirmPassword) {
-            setError("Паролі мають співпадати!");
+        if (
+            form.password !==
+            form.confirmPassword
+        ) {
+            setError(
+                "Паролі мають співпадати!"
+            );
+
             return;
         }
 
         try {
-            const response = await fetch(`${API_URL}/api/auth/register`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: form.email,
-                    password: form.password
-                    // если у тебя в беке есть name:
-                    // userName: form.name
-                })
-            });
 
-            const data = await response.json();
+            const response = await fetch(
+                `${API_URL}/register`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: form.email,
+                        password: form.password
+                    })
+                }
+            );
+
+            // 🔥 FIX JSON ERROR
+            const text =
+                await response.text();
+
+            const data =
+                text
+                    ? JSON.parse(text)
+                    : {};
 
             if (!response.ok) {
-                throw new Error(data.message || "Помилка реєстрації");
+
+                throw new Error(
+                    data.message ||
+                    "Помилка реєстрації"
+                );
             }
 
-            // 🔥 сохраняем токен если есть
+            // TOKEN
             if (data.token) {
-                localStorage.setItem("token", data.token);
+
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
             }
 
-            setSuccess("Вас успішно зареєстровано!");
+            setSuccess(
+                "Вас успішно зареєстровано!"
+            );
 
             setForm({
-                name: "",
                 email: "",
                 password: "",
                 confirmPassword: ""
             });
 
             setTimeout(() => {
+
                 window.location.href = "/";
+
             }, 1500);
 
         } catch (err: any) {
+
             console.error(err);
-            setError(err.message || "Помилка підключення до сервера");
+
+            setError(
+                err.message ||
+                "Помилка підключення до сервера"
+            );
         }
     };
 
     return (
+
         <div className="register-page">
+
             <div className="register-container">
 
                 <h2>Реєстрація</h2>
 
                 <form onSubmit={handleSubmit}>
 
-                    <label>Ім'я</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                    />
-
                     <label>Email</label>
+
                     <input
                         type="email"
                         name="email"
@@ -105,6 +138,7 @@ export default function Register() {
                     />
 
                     <label>Пароль</label>
+
                     <input
                         type="password"
                         name="password"
@@ -113,7 +147,10 @@ export default function Register() {
                         required
                     />
 
-                    <label>Підтвердити пароль</label>
+                    <label>
+                        Підтвердити пароль
+                    </label>
+
                     <input
                         type="password"
                         name="confirmPassword"
@@ -122,8 +159,17 @@ export default function Register() {
                         required
                     />
 
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-                    {success && <p style={{ color: "green" }}>{success}</p>}
+                    {error && (
+                        <p style={{ color: "red" }}>
+                            {error}
+                        </p>
+                    )}
+
+                    {success && (
+                        <p style={{ color: "green" }}>
+                            {success}
+                        </p>
+                    )}
 
                     <button type="submit">
                         Зареєструватись
@@ -132,6 +178,7 @@ export default function Register() {
                 </form>
 
             </div>
+
         </div>
     );
 }
