@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../styles/Register.css";
+import {API_AUTH} from "../api/source.ts"
 
-const API_URL = "http://localhost:5001/api/auth";
+const API_URL = API_AUTH;
 
 export default function Register() {
 

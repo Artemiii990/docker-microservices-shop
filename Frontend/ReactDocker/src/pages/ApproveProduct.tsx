@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/ApproveProduct.css";
+import {API_ORDERS} from "../api/source.ts"
 
-const API_URL = "http://localhost:5003";
-
+const ORDERS_API = API_ORDERS;
 export default function Approved() {
 
     const { id } = useParams();
@@ -18,7 +18,7 @@ export default function Approved() {
         const fetchOrder = async () => {
             try {
                 const res = await fetch(
-                    `${API_URL}/api/orders/${id}`,
+                    `${ORDERS_API}/api/orders/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

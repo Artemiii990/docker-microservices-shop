@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Profile.css";
+import {API_AUTH} from "../api/source.ts"
 
-const API_URL = "http://localhost:5001";
+
+const API_URL = API_AUTH;
 
 export default function Profile() {
 

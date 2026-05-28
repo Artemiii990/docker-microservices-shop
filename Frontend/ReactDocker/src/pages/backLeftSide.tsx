@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/backLeftSide.css";
+import {API_AUTH} from "../api/source.ts"
 
-const API_URL = "http://localhost:5001";
+const API_URL = API_AUTH;
 
 export default function Sidebar() {
 

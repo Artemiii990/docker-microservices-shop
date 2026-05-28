@@ -4,7 +4,44 @@ using Microsoft.IdentityModel.Tokens;
 using ProductService.Data;
 using System.Text;
 
+using Amazon;
+using Amazon.SecretsManager;
+using Amazon.SecretsManager.Model;
+
+using Microsoft.Extensions.Configuration.Memory;
+
+using System.Text.Json;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// =====================================
+// AWS SECRETS MANAGER
+// =====================================
+
+var secretName = "microservices-shop-secrets";
+
+var region = "eu-north-1";
+
+var secretsClient = new AmazonSecretsManagerClient(
+    RegionEndpoint.GetBySystemName(region)
+);
+
+var request = new GetSecretValueRequest
+{
+    SecretId = secretName,
+    VersionStage = "AWSCURRENT"
+};
+
+var response = await secretsClient.GetSecretValueAsync(request);
+
+var secrets = JsonSerializer.Deserialize<Dictionary<string, string>>(
+    response.SecretString!
+);
+
+if (secrets != null)
+{
+    builder.Configuration.AddInMemoryCollection(secrets);
+}
 
 // =====================================
 // DOCKER
@@ -55,15 +92,15 @@ builder.Services
                 ValidateIssuerSigningKey = true,
 
                 ValidIssuer =
-                    builder.Configuration["Jwt:Issuer"],
+                    builder.Configuration["Jwt__Issuer"],
 
                 ValidAudience =
-                    builder.Configuration["Jwt:Audience"],
+                    builder.Configuration["Jwt__Audience"],
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
-                            builder.Configuration["Jwt:Key"]!
+                            builder.Configuration["Jwt__Key"]!
                         ))
             };
     });

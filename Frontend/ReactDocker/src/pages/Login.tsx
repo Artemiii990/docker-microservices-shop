@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import {API_AUTH} from "../api/source.ts"
 
-const API_URL = "http://localhost:5001";
+const API_URL = API_AUTH;
 
 type Props = {
     setToken: (token: string) => void;

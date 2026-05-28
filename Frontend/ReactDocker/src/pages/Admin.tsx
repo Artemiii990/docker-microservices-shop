@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/AdminPanel.css";
+import {API_PRODUCTS, API_AUTH, API_ORDERS} from "../api/source.ts"
 
-// PROXY URLS
-const AUTH_API = "/api/auth";
-const PRODUCT_API = "/api/products";
-const ORDER_API = "/api/orders";
+const AUTH_API = API_AUTH;
+const PRODUCT_API = API_PRODUCTS;
+const ORDER_API = API_ORDERS;
 
 export default function AdminPanel() {
 

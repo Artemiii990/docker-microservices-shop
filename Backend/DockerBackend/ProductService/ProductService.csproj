@@ -13,6 +13,8 @@
 
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.13.8" />
 
+    <PackageReference Include="Kralizek.Extensions.Configuration.AWSSecretsManager" Version="2.0.0" />
+
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />

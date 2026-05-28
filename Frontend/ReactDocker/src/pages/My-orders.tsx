@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
+import {API_ORDERS} from "../api/source.ts";
 
-const API_URL = "http://localhost:5003";
+const API_URL = API_ORDERS;
 
 type Order = {
     id: number;

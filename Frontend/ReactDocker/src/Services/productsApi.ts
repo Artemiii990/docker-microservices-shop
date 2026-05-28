@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:5002/api/products";
+import {API_PRODUCTS} from "../api/source.ts"
+
+const API_URL = API_PRODUCTS;
 
 export const getProducts = async () => {
 

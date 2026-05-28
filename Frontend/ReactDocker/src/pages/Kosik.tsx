@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Kosik.css";
+import {API_ORDERS} from "../api/source.ts"
 
-const API_URL = "http://localhost:5003"; // 🔥 ВАЖНО
+const API_URL = API_ORDERS;
 
 type CartItem = {
     id: number;

@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../styles/BuyProduct.css";
+import {API_ORDERS} from "../api/source.ts"
 
-const API_URL = "http://localhost:5003";
+const API_URL = API_ORDERS;
 
 export default function BuyProduct() {
 
