@@ -8,13 +8,12 @@ type Props = {
     token: string | null;
 };
 
+const BASE_URL = "http://51.21.218.127:5002";
+
 export default function Home({ token }: Props) {
 
-    const [products, setProducts] =
-        useState<Product[]>([]);
-
-    const [query, setQuery] =
-        useState("");
+    const [products, setProducts] = useState<Product[]>([]);
+    const [query, setQuery] = useState("");
 
     const [filters, setFilters] = useState({
         search: "",
@@ -23,174 +22,127 @@ export default function Home({ token }: Props) {
         sortType: "default"
     });
 
-    // =====================================
+    // =====================
     // LOAD PRODUCTS
-    // =====================================
-
+    // =====================
     useEffect(() => {
-
         loadProducts();
-
     }, []);
 
     const loadProducts = async () => {
-
         try {
-
             const data = await getProducts();
 
-            setProducts(data);
+            console.log("PRODUCTS RAW:", data);
+
+            const normalized = Array.isArray(data)
+                ? data
+                : [];
+
+            setProducts(normalized);
 
         } catch (error) {
-
             console.error(error);
         }
     };
 
-    // =====================================
-    // ELASTICSEARCH SEARCH
-    // =====================================
-
+    // =====================
+    // SEARCH
+    // =====================
     const searchProducts = async () => {
-
         try {
-
-            // EMPTY QUERY
             if (!query.trim()) {
-
                 loadProducts();
-
                 return;
             }
 
             const response = await fetch(
-                `/api/products/search?query=${query}`
+                `${BASE_URL}/api/products/search?query=${query}`
             );
 
             if (!response.ok) {
-
-                throw new Error(
-                    "Ошибка поиска"
-                );
+                throw new Error("Ошибка поиска");
             }
 
             const data = await response.json();
 
-            setProducts(data);
+            const normalized = Array.isArray(data)
+                ? data
+                : data?.$values
+                    ? data.$values
+                    : [];
+
+            setProducts(normalized);
 
         } catch (error) {
-
             console.error(error);
         }
     };
 
-    // =====================================
+    // =====================
     // FILTERS
-    // =====================================
-
+    // =====================
     const filtered = products.filter(p => {
-
-        const name =
-            p.name.toLowerCase();
-
-        const price =
-            p.price;
+        const name = (p.name ?? "").toLowerCase();
+        const price = p.price ?? 0;
 
         if (
             filters.search &&
-            !name.includes(
-                filters.search.toLowerCase()
-            )
-        )
-            return false;
+            !name.includes(filters.search.toLowerCase())
+        ) return false;
 
         if (
             filters.minPrice &&
             price < Number(filters.minPrice)
-        )
-            return false;
+        ) return false;
 
         if (
             filters.maxPrice &&
             price > Number(filters.maxPrice)
-        )
-            return false;
+        ) return false;
 
         return true;
     });
 
-    // =====================================
+    // =====================
     // SORT
-    // =====================================
+    // =====================
+    const sorted = [...filtered].sort((a, b) => {
 
-    const sorted = [...filtered].sort(
-        (a, b) => {
+        if (filters.sortType === "price_asc")
+            return a.price - b.price;
 
-            if (
-                filters.sortType ===
-                "price_asc"
-            )
-                return a.price - b.price;
+        if (filters.sortType === "price_desc")
+            return b.price - a.price;
 
-            if (
-                filters.sortType ===
-                "price_desc"
-            )
-                return b.price - a.price;
+        return 0;
+    });
 
-            return 0;
-        }
-    );
-
-    // =====================================
+    // =====================
     // UI
-    // =====================================
-
+    // =====================
     return (
-
         <div className="layout">
 
-            <Sidebar
-                onFilterChange={setFilters}
-            />
+            <Sidebar onFilterChange={setFilters} />
 
             <div className="content">
 
-                {/* SEARCH BAR */}
-
-                <div
-                    style={{
-                        display: "flex",
-                        gap: "10px",
-                        marginBottom: "20px"
-                    }}
-                >
+                <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
 
                     <input
                         type="text"
                         placeholder="Search products..."
                         value={query}
-                        onChange={(e) =>
-                            setQuery(
-                                e.target.value
-                            )
-                        }
-
-                        style={{
-                            padding: "10px",
-                            width: "300px"
-                        }}
+                        onChange={(e) => setQuery(e.target.value)}
+                        style={{ padding: "10px", width: "300px" }}
                     />
 
-                    <button
-                        onClick={searchProducts}
-                    >
+                    <button onClick={searchProducts}>
                         Search
                     </button>
 
                 </div>
-
-                {/* PRODUCTS */}
 
                 <ProductsForYou
                     products={sorted}
@@ -198,7 +150,6 @@ export default function Home({ token }: Props) {
                 />
 
             </div>
-
         </div>
     );
 }

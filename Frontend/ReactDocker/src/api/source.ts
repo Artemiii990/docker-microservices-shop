@@ -1,5 +1,5 @@
 export const API_PRODUCTS =
-    "http://51.21.218.127:5002";
+    "http://51.21.218.127:5002/api/products";
 
 export const API_AUTH =
     "http://51.21.218.127:5001";
