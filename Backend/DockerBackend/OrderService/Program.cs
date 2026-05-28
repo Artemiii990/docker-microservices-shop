@@ -29,13 +29,15 @@ var request = new GetSecretValueRequest
     VersionStage = "AWSCURRENT"
 };
 
-var response = await secretsClient.GetSecretValueAsync(request);
+var response =
+    await secretsClient.GetSecretValueAsync(request);
 
-var secrets = JsonSerializer.Deserialize<
-    Dictionary<string, string>
->(
-    response.SecretString!
-);
+var secrets =
+    JsonSerializer.Deserialize<
+        Dictionary<string, string>
+    >(
+        response.SecretString!
+    );
 
 if (secrets != null)
 {
@@ -71,7 +73,8 @@ builder.Services.AddDbContext<AppDbContext>(
             builder.Configuration.GetConnectionString(
                 "DefaultConnection"
             ),
-            sql => sql.EnableRetryOnFailure()
+            sql =>
+                sql.EnableRetryOnFailure()
         )
 );
 
@@ -93,17 +96,18 @@ builder.Services
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
+                    // 🔥 FIXED
                     ValidIssuer =
-                        builder.Configuration["Jwt__Issuer"],
+                        builder.Configuration["Jwt:Issuer"],
 
                     ValidAudience =
-                        builder.Configuration["Jwt__Audience"],
+                        builder.Configuration["Jwt:Audience"],
 
                     IssuerSigningKey =
                         new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(
                                 builder.Configuration[
-                                    "Jwt__Key"
+                                    "Jwt:Key"
                                 ]!
                             )
                         )

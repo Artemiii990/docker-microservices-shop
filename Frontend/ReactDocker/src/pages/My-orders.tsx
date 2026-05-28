@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
-import {API_ORDERS} from "../api/source.ts";
+import { API_ORDERS } from "../api/source.ts";
 
 const API_URL = API_ORDERS;
 
@@ -16,11 +16,26 @@ type Order = {
 
 export default function MyOrders() {
 
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] =
+        useState<Order[]>([]);
+
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
+
+    // =====================================
+    // FETCH ORDERS
+    // =====================================
 
     const fetchOrders = async () => {
+
+        const token =
+            localStorage.getItem("token");
+
+        if (!token) {
+
+            navigate("/login");
+
+            return;
+        }
 
         try {
 
@@ -28,37 +43,63 @@ export default function MyOrders() {
                 `${API_URL}/api/orders/myorders`,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization:
+                            `Bearer ${token}`
                     }
                 }
             );
 
             if (!res.ok) {
-                throw new Error("Помилка завантаження замовлень");
+
+                throw new Error(
+                    "Помилка завантаження замовлень"
+                );
             }
 
-            const data = await res.json();
+            const data =
+                await res.json();
+
             setOrders(data);
 
         } catch (err) {
+
             console.error(err);
         }
     };
 
-    useEffect(() => {
+    // =====================================
+    // LOAD
+    // =====================================
 
-        if (!token) {
-            navigate("/login");
-            return;
-        }
+    useEffect(() => {
 
         fetchOrders();
 
     }, []);
 
-    const cancelOrder = async (orderId: number) => {
+    // =====================================
+    // CANCEL ORDER
+    // =====================================
 
-        if (!confirm("Скасувати замовлення?")) return;
+    const cancelOrder = async (
+        orderId: number
+    ) => {
+
+        if (
+            !confirm(
+                "Скасувати замовлення?"
+            )
+        ) return;
+
+        const token =
+            localStorage.getItem("token");
+
+        if (!token) {
+
+            navigate("/login");
+
+            return;
+        }
 
         try {
 
@@ -66,90 +107,144 @@ export default function MyOrders() {
                 `${API_URL}/api/orders/${orderId}/cancel`,
                 {
                     method: "PUT",
+
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization:
+                            `Bearer ${token}`
                     }
                 }
             );
 
             if (!res.ok) {
-                throw new Error("Помилка скасування");
+
+                throw new Error(
+                    "Помилка скасування"
+                );
             }
 
             fetchOrders();
 
         } catch (err) {
+
             console.error(err);
-            alert("Не вдалося скасувати замовлення");
+
+            alert(
+                "Не вдалося скасувати замовлення"
+            );
         }
     };
 
+    // =====================================
+    // UI
+    // =====================================
+
     return (
+
         <div className="profile-page">
 
             <div className="profile-container">
 
-                <h2>Мої замовлення</h2>
+                <h2>
+                    Мої замовлення
+                </h2>
 
                 {orders.length === 0 ? (
-                    <p>У вас поки немає замовлень</p>
+
+                    <p>
+                        У вас поки немає замовлень
+                    </p>
+
                 ) : (
 
                     <table>
 
                         <thead>
+
                         <tr>
+
                             <th>№</th>
+
                             <th>Товар</th>
+
                             <th>Кіл-сть</th>
+
                             <th>Ціна</th>
+
                             <th>Дата</th>
+
                             <th>Статус</th>
+
                             <th>Дія</th>
+
                         </tr>
+
                         </thead>
 
                         <tbody>
 
-                        {orders.map((order, index) => (
+                        {orders.map(
+                            (order, index) => (
 
-                            <tr key={order.id}>
+                                <tr key={order.id}>
 
-                                <td>{index + 1}</td>
+                                    <td>
+                                        {index + 1}
+                                    </td>
 
-                                <td>{order.productName}</td>
+                                    <td>
+                                        {order.productName}
+                                    </td>
 
-                                <td>{order.quantity}</td>
+                                    <td>
+                                        {order.quantity}
+                                    </td>
 
-                                <td>{order.price} грн</td>
+                                    <td>
+                                        {order.price} грн
+                                    </td>
 
-                                <td>
-                                    {new Date(order.date).toLocaleDateString()}
-                                </td>
+                                    <td>
 
-                                <td>
-                                    <span className={`status ${order.status}`}>
+                                        {new Date(
+                                            order.date
+                                        ).toLocaleDateString()}
+
+                                    </td>
+
+                                    <td>
+
+                                    <span
+                                        className={
+                                            `status ${order.status}`
+                                        }
+                                    >
                                         {order.status}
                                     </span>
-                                </td>
 
-                                <td>
+                                    </td>
 
-                                    {order.status === "Processing" && (
+                                    <td>
 
-                                        <button
-                                            onClick={() => cancelOrder(order.id)}
-                                        >
-                                            Скасувати
-                                        </button>
+                                        {order.status ===
+                                            "Processing" && (
 
-                                    )}
+                                                <button
+                                                    onClick={() =>
+                                                        cancelOrder(
+                                                            order.id
+                                                        )
+                                                    }
+                                                >
+                                                    Скасувати
+                                                </button>
 
-                                </td>
+                                            )}
 
-                            </tr>
+                                    </td>
 
-                        ))}
+                                </tr>
+
+                            ))}
 
                         </tbody>
 
