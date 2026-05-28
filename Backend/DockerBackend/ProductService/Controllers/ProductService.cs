@@ -1,10 +1,13 @@
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
+
 using Elastic.Clients.Elasticsearch;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using ProductService.Data;
 using ProductService.Models;
 
@@ -22,22 +25,14 @@ public class ProductsController : ControllerBase
 
     public ProductsController(
         AppDbContext context,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ElasticsearchClient elasticClient)
     {
         _context = context;
 
         _configuration = configuration;
 
-        // =========================================
-        // ELASTICSEARCH
-        // =========================================
-
-        var settings =
-            new ElasticsearchClientSettings(
-                new Uri("http://elasticsearch:9200"));
-
-        _elasticClient =
-            new ElasticsearchClient(settings);
+        _elasticClient = elasticClient;
     }
 
     // =========================================
@@ -88,18 +83,14 @@ public class ProductsController : ControllerBase
                 });
             }
 
-            var products =
-                response.Documents;
-
-            return Ok(products);
+            return Ok(response.Documents);
         }
         catch (Exception ex)
         {
             return StatusCode(500, new
             {
                 message = ex.Message,
-                inner = ex.InnerException?.Message,
-                stack = ex.StackTrace
+                inner = ex.InnerException?.Message
             });
         }
     }
@@ -165,7 +156,7 @@ public class ProductsController : ControllerBase
                 dto.Image.OpenReadStream();
 
             // =========================================
-            // PUT REQUEST
+            // UPLOAD REQUEST
             // =========================================
 
             var request =
@@ -242,7 +233,7 @@ public class ProductsController : ControllerBase
                 );
 
             // =========================================
-            // ELASTIC ERROR
+            // ELASTICSEARCH ERROR
             // =========================================
 
             if (!elasticResponse.IsValidResponse)
@@ -282,6 +273,10 @@ public class ProductsController : ControllerBase
 
         if (product == null)
             return NotFound();
+
+        // =========================================
+        // DELETE FROM MSSQL
+        // =========================================
 
         _context.Products.Remove(product);
 
